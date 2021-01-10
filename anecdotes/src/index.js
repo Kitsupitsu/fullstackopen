@@ -6,13 +6,21 @@ const App = (props) => {
   const [points, setPoints] = useState(new Uint8Array(anecdotes.length));
 
   return (
+    <>
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{props.anecdotes[selected]}</p>
       <p>has {points[selected]} points</p>
       <br/>
       <button onClick={() => setSelected(Math.floor(Math.random() * (anecdotes.length)))}>Next anecdote</button>
       <button onClick={() => AddPoints(points, selected, setPoints)}>Vote</button>
     </div>
+    <div>
+      <h1>Anecdote with most votes</h1>
+      <p>{props.anecdotes[MostVoted(points)]}</p>
+      <p>has {points[MostVoted(points)]} points</p>
+    </div>
+    </>
   )
 }
 
@@ -22,6 +30,9 @@ const AddPoints = (points, selected, setPoints) => {
   setPoints(copy)
 }
 
+const MostVoted = (points) => {
+  return points.indexOf(Math.max.apply(null, points));
+}
 
 const anecdotes = [
   'If it hurts, do it more often',
