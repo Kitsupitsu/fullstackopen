@@ -15,22 +15,28 @@ const App = () => {
       <button id="bad" onClick={() => setBad(bad+1)}>bad</button>
 
       <h1>Statistics</h1>
-      <p>Good {good}</p>
-      <p>Neutral {neutral}</p>
-      <p>Bad {bad}</p>
-      <p>All {all}</p>
-      <Statistics good={good} bad={bad} all={all}/>
+      <Statistics good={good} bad={bad} neutral={neutral} all={all}/>
     </div>
   )
 }
 
 const Statistics = (props) => {
-  return (
-    <>
-    <p>Average {CalcAvg(props.good, props.bad, props.all)} </p>
-    <p>Positive {CalcPos(props.good, props.all)} % </p>
-    </>
-  )
+  if (parseInt(props.all) > 0) {
+    return (
+      <>
+      <p>Good {props.good}</p>
+      <p>Neutral {props.neutral}</p>
+      <p>Bad {props.bad}</p>
+      <p>All {props.all}</p>
+      <p>Average {CalcAvg(props.good, props.bad, props.all)} </p>
+      <p>Positive {CalcPos(props.good, props.all)} % </p>
+      </>
+    )
+  } else {
+    return (
+      <p>No feedback given</p>
+    )
+  }  
 }
 
 const CalcAvg = (good, bad, all) => {
