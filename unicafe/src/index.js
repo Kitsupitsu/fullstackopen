@@ -19,9 +19,17 @@ const App = () => {
       <p>Neutral {neutral}</p>
       <p>Bad {bad}</p>
       <p>All {all}</p>
-      <p>Average {CalcAvg(good, bad, all)} </p>
-      <p>Positive {CalcPos(good, all)} % </p>
+      <Statistics good={good} bad={bad} all={all}/>
     </div>
+  )
+}
+
+const Statistics = (props) => {
+  return (
+    <>
+    <p>Average {CalcAvg(props.good, props.bad, props.all)} </p>
+    <p>Positive {CalcPos(props.good, props.all)} % </p>
+    </>
   )
 }
 
