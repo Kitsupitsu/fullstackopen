@@ -2,29 +2,52 @@ import React from 'react'
 import ReactDOM, { render } from 'react-dom'
 
 const App = () => {
-  const course = {
-    id: 1,
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10,
-        id: 1
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7,
-        id: 2
-      },
-      {
-        name: 'State of a component',
-        exercises: 14,
-        id: 3
-      }
-    ]
-  }
+  const courses = [
+    {
+      name: 'Half Stack application development',
+      id: 1,
+      parts: [
+        {
+          name: 'Fundamentals of React',
+          exercises: 10,
+          id: 1
+        },
+        {
+          name: 'Using props to pass data',
+          exercises: 7,
+          id: 2
+        },
+        {
+          name: 'State of a component',
+          exercises: 14,
+          id: 3
+        },
+        {
+          name: 'Redux',
+          exercises: 11,
+          id: 4
+        }
+      ]
+    }, 
+    {
+      name: 'Node.js',
+      id: 2,
+      parts: [
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'Middlewares',
+          exercises: 7,
+          id: 2
+        }
+      ]
+    }
+  ]
 
-  return <Course course={course} />
+  return (<div>{ courses.map(course => <Course course={course} />)}</div>)
 }
 
 const Course = ({course}) => {
@@ -57,11 +80,7 @@ const Part = (props) => {
 }
 
 const Total = (props) => {
-  let sum = 0;
-  
-  for (let part of props.parts.parts) {
-    sum += parseInt(part.exercises);
-  }
+  const sum = props.parts.parts.reduce((s,p) => s+p.exercises, 0);
   return (
     <b>total of {sum} exercises</b>
   )
