@@ -32,6 +32,7 @@ const Course = ({course}) => {
     <div>
     <Header course={course}/>
     <Content course={course}/>
+    <Total parts={course}/>
     </div>);
 }
 
@@ -58,11 +59,11 @@ const Part = (props) => {
 const Total = (props) => {
   let sum = 0;
   
-  for (let part of props.parts) {
+  for (let part of props.parts.parts) {
     sum += parseInt(part.exercises);
   }
   return (
-    <p>Number of exercises {sum}</p>
+    <b>total of {sum} exercises</b>
   )
 }
 
