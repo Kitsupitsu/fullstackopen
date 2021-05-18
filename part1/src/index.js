@@ -1,44 +1,50 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDOM, { render } from 'react-dom'
 
 const App = () => {
-  const course = 'Half Stack application development'
-  const parts = [
-    {
-      name: 'Fundamentals of React',
-      exercises: 10
-    },
-    {
-      name: 'Using props to pass data',
-      exercises: 7
-    },
-    {
-      name: 'State of a component',
-      exercises: 14
-    }
-  ]
+  const course = {
+    id: 1,
+    name: 'Half Stack application development',
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10,
+        id: 1
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7,
+        id: 2
+      },
+      {
+        name: 'State of a component',
+        exercises: 14,
+        id: 3
+      }
+    ]
+  }
 
-  return (
+  return <Course course={course} />
+}
+
+const Course = ({course}) => {
+    return (
     <div>
-      <Header course={course}/>
-      <Content parts={parts}/>
-      <Total parts={parts}/>
-    </div>
-  )
+    <Header course={course}/>
+    <Content course={course}/>
+    </div>);
 }
 
 const Header = (props) => {
   return (
-    <h1>{props.course}</h1>
+    <h1>{props.course.name}</h1>
   )
 }
 
 const Content = (props) => {
-  let parts = [];
-    props.parts.forEach(part => {
-      parts.push(<Part part={part.name} exercises={part.exercises} />)
-    })
-  return parts;
+  return (<div>
+    { props.course.parts.map(onepart => <Part key={onepart.id} part={onepart.name} exercises={onepart.exercises}/>) }
+  </div>)
 }
 
 const Part = (props) => {
