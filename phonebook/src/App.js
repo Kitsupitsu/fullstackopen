@@ -40,27 +40,41 @@ const App = () => {
     setFilterName(event.target.value)
   }
 
-
-  const personsToShow = filterName == ''
-    ? persons
-    : persons.filter(person => person.name.includes(filterName))
-
   return (
     <div>
-      <h2>Phonebook</h2>
-      <div>filter shown with <input value={filterName} onChange={handleFilterChange} /></div>
-      <h3>Add a new:</h3>
-      <form onSubmit={addNewPerson}>
-        <div>
-          <div>name: <input value={newName} onChange={handleNameChange}/></div>
-          <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
-          <div><button type="submit">add</button></div>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      {personsToShow.map(person => <p key={person.name}>{person.name}: {person.number}</p>)}
+        <h2>Phonebook</h2>
+        <Filter name={filterName} changeName={handleFilterChange} />
+        <h3>Add a new:</h3>
+        <PersonForm 
+        addNewPerson={addNewPerson}
+        newName={newName} handleNameChange={handleNameChange}
+        newNumber={newNumber} handleNumberChange={handleNumberChange} />
+        <h2>Numbers</h2>
+        <Numbers persons={persons} filterName={filterName}/>
     </div>
   )
+}
+
+const Filter = (props) => {
+    return (<div>filter shown with <input value={props.name} onChange={props.changeName} /></div>)
+}
+
+const PersonForm = (props) => {
+    return (<form onSubmit={props.addNewPerson}>
+        <div>
+          <div>name: <input value={props.newName} onChange={props.handleNameChange}/></div>
+          <div>number: <input value={props.newNumber} onChange={props.handleNumberChange}/></div>
+          <div><button type="submit">add</button></div>
+        </div>
+      </form>)
+}
+
+const Numbers = (props) => {
+    const personsToShow = props.filterName === ''
+    ? props.persons
+    : props.persons.filter(person => person.name.includes(props.filterName))
+
+    return <div>{personsToShow.map(person => <p key={person.name}>{person.name}: {person.number}</p>)}</div>
 }
 
 export default App
