@@ -46,12 +46,17 @@ const Countries = (props) => {
 const CountryData = (props) => {
     var country = props.country;
     const headers = {
-        'Content-Type': 'text/plain'
+        'Content-Type': 'text/plain',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
     };
     useEffect(() => {
-        axios.get('http://api.weatherstack.com/?access_key=' + api_key + '&query=' + country.capital, {headers})
+        const params = { access_key: api_key, query: country.capital }
+        axios.get('http://api.weatherstack.com/current?', {params})
         .then(response => {
-            props.setWeather(response.data)
+            const resp = response.data;
+            props.setWeather(resp.current);
         })
         .catch(error => {console.log(error)})
     }, [])
@@ -67,7 +72,10 @@ const CountryData = (props) => {
         </ul>
         <img src={country.flag} height={"100"}/>
         <h2>Weather in {country.name}:</h2>
-                {console.log(props.weather)}
+        {console.log(props.weather)}
+        <p><b>Temperature: </b>{props.weather.temperature} celsius</p>
+        <img src={props.weather.weather_icons}/>
+        <p><b>Wind: </b>{props.weather.wind_speed} mph direction {props.weather.wind_dir}</p>
     </div>
     
 }
