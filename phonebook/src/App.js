@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import personService from './services/persons'
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -9,16 +10,19 @@ const App = () => {
 
   const addNewPerson = (event) => {
     event.preventDefault()
-    
-    if (persons.some(e => e.name === newName)) {
-      alert(newName + " is already added to phonebook!");
-    } else {
-      const personObject = {
-        name: newName,
-        number: newNumber
-      }
-      setPersons(persons.concat(personObject))
+    const personObject = {
+      name: newName,
+      number: newNumber
     }
+    var oldPerson = persons.find(e => e.name === newName);
+    if (oldPerson != null) {
+      if (window.confirm(newName + " is already added to phonebook, replace the old number with new one?")) {
+        personService.update(oldPerson.id, personObject)
+      }
+    } else {
+      personService.create(personObject)
+    }
+    personService.getAll().then(person => setPersons(person));
     setNewName('')
     setNewNumber('')
   }
@@ -36,11 +40,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      })
+    personService.getAll().then(person => setPersons(person));
   }, [])
 
   return (
@@ -72,12 +72,18 @@ const PersonForm = (props) => {
       </form>)
 }
 
+const deleteNumber = (person) => {
+  if (window.confirm("Do you really want to delete " + person.name + "?")) {
+    personService.remove(person.id);
+  }
+}
+
 const Numbers = (props) => {
     const personsToShow = props.filterName === ''
     ? props.persons
     : props.persons.filter(person => person.name.includes(props.filterName))
 
-    return <div>{personsToShow.map(person => <p key={person.name}>{person.name}: {person.number}</p>)}</div>
+    return <div>{personsToShow.map(person => <p key={person.name}>{person.name}: {person.number} <button onClick={() => deleteNumber(person)}>Delete</button></p>)}</div>
 }
 
 export default App
